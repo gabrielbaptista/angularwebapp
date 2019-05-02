@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
+import { AlertsService } from 'angular-alert-module';
 
 @Component({
   selector: 'app-register',
@@ -8,14 +11,22 @@ import {NgForm} from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService, private router: Router, private alertService: AlertsService) { }
 
   public ngOnInit() {
   }
 
   public onSubmit(f: NgForm) {
-    console.log(f.value);  // { first: '', last: '' }
-    console.log(f.valid);  // false
+    if (f.valid) {
+      this.userService.registerUser(f.value)
+        .then( () => {
+          this.router.navigateByUrl('/login');
+          this.alertService.setMessage('Sucesso na criação','success');
+        })
+      .catch( (err) => {
+        this.alertService.setMessage(err.error,'error');
+        console.log(err.error);
+      });
+    }
   }
-
 }
