@@ -9,11 +9,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   private URL(): string {
-    return 'https://nodejs-api-mongo.azurewebsites.net';
+    return 'http://localhost:9050/';
   }
 
    public registerUser(user) {
-    const api = this.URL() + '/api/users/register';
+    const api = this.URL() + 'api/users/register';
     const promise = new Promise((resolve, reject) => {
       this.http.post(api, user, {responseType: 'text'})
         .toPromise()
